@@ -1,0 +1,33 @@
+graph TD
+    BAT["Battery\nAKY0106 LiPo 400mAh"]
+    CHARGER["BQ25180YBGR\nLiPo Charger"]
+    DCDC["RT6160AWSC\nDC/DC Boost\n(EPD HV supply)"]
+    MCU["nRF52840\nARM Cortex-M4F @ 64MHz\nBLE 5.0 / USB FS"]
+    EPD["WSH-12561\nE-Paper Display"]
+    IMU["IMU 6-axis\nAccel + Gyro\nINT1 / INT2"]
+    FUEL["MAX17048G+T10\nFuel Gauge"]
+    HAPTIC["DRV2605YZFR\nHaptic Driver\n+ FIT0774 ERM motor"]
+    USB["KH-TYPE-C-16P\nUSB-C\n+ USBLC6 ESD"]
+    SWD["TC2030-IDC\nSWD Debug"]
+    ANT["2450AT18B100E\nChip Antenna 2.4GHz"]
+    BTN["3x Tactile Buttons"]
+
+    BAT -->|VBAT| CHARGER
+    CHARGER -->|3V3 / VREG| MCU
+    CHARGER -->|VBAT| DCDC
+    DCDC -->|HV rails| EPD
+
+    MCU -->|SPI| EPD
+    MCU -->|I2C| IMU
+    MCU -->|I2C| FUEL
+    MCU -->|I2C| HAPTIC
+    MCU -->|I2C| CHARGER
+    MCU -->|USB D+/D-| USB
+    MCU -->|SWD| SWD
+    MCU -->|RF| ANT
+    MCU -->|GPIO| BTN
+
+    IMU -->|INT1/INT2| MCU
+    FUEL -->|ALERT| MCU
+    CHARGER -->|PMIC_INT| MCU
+    USB -->|VBUS| CHARGER
